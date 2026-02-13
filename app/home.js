@@ -10,7 +10,7 @@ import {
     FlatList,
     Dimensions
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
 
@@ -22,14 +22,14 @@ const POPULAR_DATA = [
         id: '1',
         title: 'Gros Horloge',
         rating: '4.1',
-        image: require('../assets/Rouen.png'), // Utilise ton image par défaut ou une URL
+        image: require('../assets/gros-horloge.png'),
         isFavorite: true,
     },
     {
         id: '2',
         title: 'Radisson Blu',
         rating: '4.5',
-        image: { uri: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/33737035.jpg?k=368f5d026792377a0694174d15024443171804369796e95c1a7044391e605d3c&o=&hp=1' },
+        image: require('../assets/radisson.png'),
         isFavorite: false,
     },
 ];
@@ -40,14 +40,14 @@ const RECOMMENDED_DATA = [
         title: 'Aître saint maclou',
         rating: '3.9',
         tag: 'Mts76',
-        image: { uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Aitre_Saint-Maclou_Rouen_cour.jpg/1200px-Aitre_Saint-Maclou_Rouen_cour.jpg' },
+        image: require('../assets/saint-maclou.png'),
     },
     {
         id: '2',
         title: 'La Couronne',
         rating: '3.9',
         tag: null,
-        image: { uri: 'https://res.cloudinary.com/tf-lab/image/upload/w_600,h_337,c_fill,g_auto:subject,q_auto,f_auto/restaurant/640105d6-616a-4c28-b80c-0335bb997232/e0807534-105b-4688-912f-871d87af48f6.jpg' },
+        image: require('../assets/restaux-couronne.png'),
     }
 ];
 
@@ -55,7 +55,6 @@ const Home = () => {
     const router = useRouter();
     const [activeCategory, setActiveCategory] = useState('Location');
 
-    // Rendu d'une carte "Popular"
     const renderPopularItem = ({ item }) => (
         <View style={styles.cardPopular}>
             <Image
@@ -64,7 +63,6 @@ const Home = () => {
                 resizeMode="cover"
             />
 
-            {/* Bouton Coeur */}
             <View style={styles.heartContainer}>
                 <Ionicons
                     name={item.isFavorite ? "heart" : "heart-outline"}
@@ -115,88 +113,90 @@ const Home = () => {
     return (
         <View style={styles.container}>
             <SafeAreaView style={{ flex: 1 }}>
-                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+                <SafeAreaProvider>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
 
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <View>
-                            <Text style={styles.headerLabel}>Explore</Text>
-                            <Text style={styles.headerTitle}>Rouen</Text>
+                        {/* Header */}
+                        <View style={styles.header}>
+                            <View>
+                                <Text style={styles.headerLabel}>Explore</Text>
+                                <Text style={styles.headerTitle}>Rouen</Text>
+                            </View>
+                            <View style={styles.locationRow}>
+                                <Ionicons name="location-sharp" size={16} color="#176FF2" />
+                                <Text style={styles.locationText}>Rouen, FR</Text>
+                                <Ionicons name="chevron-down" size={16} color="#176FF2" />
+                            </View>
                         </View>
-                        <View style={styles.locationRow}>
-                            <Ionicons name="location-sharp" size={16} color="#176FF2" />
-                            <Text style={styles.locationText}>Rouen, FR</Text>
-                            <Ionicons name="chevron-down" size={16} color="#176FF2" />
-                        </View>
-                    </View>
 
-                    {/* Search Bar */}
-                    <View style={styles.searchContainer}>
-                        <Ionicons name="search" size={20} color="#B8B8B8" style={{ marginRight: 10 }} />
-                        <TextInput
-                            placeholder="Find things to do"
-                            placeholderTextColor="#B8B8B8"
-                            style={styles.searchInput}
+                        {/* Search Bar */}
+                        <View style={styles.searchContainer}>
+                            <Ionicons name="search" size={20} color="#B8B8B8" style={{ marginRight: 10 }} />
+                            <TextInput
+                                placeholder="Find things to do"
+                                placeholderTextColor="#B8B8B8"
+                                style={styles.searchInput}
+                            />
+                        </View>
+
+                        {/* Categories */}
+                        <View style={styles.categoriesContainer}>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingLeft: 20 }}>
+                                {CATEGORIES.map((cat, index) => (
+                                    <TouchableOpacity
+                                        key={index}
+                                        style={[
+                                            styles.categoryItem,
+                                            activeCategory === cat && styles.categoryItemActive
+                                        ]}
+                                        onPress={() => setActiveCategory(cat)}
+                                    >
+                                        <Text style={[
+                                            styles.categoryText,
+                                            activeCategory === cat && styles.categoryTextActive
+                                        ]}>
+                                            {cat}
+                                        </Text>
+                                    </TouchableOpacity>
+                                ))}
+                                {/* Juste pour le padding à droite */}
+                                <View style={{ width: 40 }} />
+                            </ScrollView>
+                        </View>
+
+                        {/* Section Popular */}
+                        <View style={styles.sectionHeader}>
+                            <Text style={styles.sectionTitle}>Popular</Text>
+                            <TouchableOpacity>
+                                <Text style={styles.seeAllText}>See all</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <FlatList
+                            data={POPULAR_DATA}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            keyExtractor={item => item.id}
+                            renderItem={renderPopularItem}
+                            contentContainerStyle={{ paddingLeft: 20, paddingRight: 20 }}
                         />
-                    </View>
 
-                    {/* Categories */}
-                    <View style={styles.categoriesContainer}>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingLeft: 20 }}>
-                            {CATEGORIES.map((cat, index) => (
-                                <TouchableOpacity
-                                    key={index}
-                                    style={[
-                                        styles.categoryItem,
-                                        activeCategory === cat && styles.categoryItemActive
-                                    ]}
-                                    onPress={() => setActiveCategory(cat)}
-                                >
-                                    <Text style={[
-                                        styles.categoryText,
-                                        activeCategory === cat && styles.categoryTextActive
-                                    ]}>
-                                        {cat}
-                                    </Text>
-                                </TouchableOpacity>
-                            ))}
-                            {/* Juste pour le padding à droite */}
-                            <View style={{ width: 40 }} />
-                        </ScrollView>
-                    </View>
+                        {/* Section Recommended */}
+                        <View style={[styles.sectionHeader, { marginTop: 25 }]}>
+                            <Text style={styles.sectionTitle}>Recommended</Text>
+                        </View>
 
-                    {/* Section Popular */}
-                    <View style={styles.sectionHeader}>
-                        <Text style={styles.sectionTitle}>Popular</Text>
-                        <TouchableOpacity>
-                            <Text style={styles.seeAllText}>See all</Text>
-                        </TouchableOpacity>
-                    </View>
+                        <FlatList
+                            data={RECOMMENDED_DATA}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            keyExtractor={item => item.id}
+                            renderItem={renderRecommendedItem}
+                            contentContainerStyle={{ paddingLeft: 20, paddingRight: 20 }}
+                        />
 
-                    <FlatList
-                        data={POPULAR_DATA}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        keyExtractor={item => item.id}
-                        renderItem={renderPopularItem}
-                        contentContainerStyle={{ paddingLeft: 20, paddingRight: 20 }}
-                    />
-
-                    {/* Section Recommended */}
-                    <View style={[styles.sectionHeader, { marginTop: 25 }]}>
-                        <Text style={styles.sectionTitle}>Recommended</Text>
-                    </View>
-
-                    <FlatList
-                        data={RECOMMENDED_DATA}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        keyExtractor={item => item.id}
-                        renderItem={renderRecommendedItem}
-                        contentContainerStyle={{ paddingLeft: 20, paddingRight: 20 }}
-                    />
-
-                </ScrollView>
+                    </ScrollView>
+                </SafeAreaProvider>
             </SafeAreaView>
 
             {/* Bottom Navigation Bar */}
