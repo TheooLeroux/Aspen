@@ -27,10 +27,23 @@ export default function HotelDetails() {
                         {/* Title + Show map */}
                         <View style={styles.titleRow}>
                             <Text style={styles.title}>Radisson Blue</Text>
-                            <Pressable>
+
+                            <Pressable
+                                onPress={() =>
+                                    router.push({
+                                        pathname: "/map",
+                                        params: {
+                                            id: String(id),
+                                            lat: "49.4431",
+                                            lng: "1.0993",
+                                        },
+                                    })
+                                }
+                            >
                                 <Text style={styles.showMap}>Show map</Text>
                             </Pressable>
                         </View>
+
 
                         {/* Rating */}
                         <View style={styles.ratingRow}>
