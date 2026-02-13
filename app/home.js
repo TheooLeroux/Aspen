@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import {StyleSheet, Text, View, TextInput, ScrollView, Image, TouchableOpacity, FlatList, Dimensions} from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    TextInput,
+    ScrollView,
+    Image,
+    TouchableOpacity,
+    FlatList,
+    Dimensions
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
@@ -12,14 +22,14 @@ const POPULAR_DATA = [
         id: '1',
         title: 'Gros Horloge',
         rating: '4.1',
-        image: require('../assets/gros-horloge.png'),
+        image: require('../assets/Rouen.png'), // Utilise ton image par défaut ou une URL
         isFavorite: true,
     },
     {
         id: '2',
         title: 'Radisson Blu',
         rating: '4.5',
-        image: require('../assets/radisson.png'),
+        image: { uri: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/33737035.jpg?k=368f5d026792377a0694174d15024443171804369796e95c1a7044391e605d3c&o=&hp=1' },
         isFavorite: false,
     },
 ];
@@ -30,14 +40,14 @@ const RECOMMENDED_DATA = [
         title: 'Aître saint maclou',
         rating: '3.9',
         tag: 'Mts76',
-        image: require('../assets/saint-maclou.png'),
+        image: { uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Aitre_Saint-Maclou_Rouen_cour.jpg/1200px-Aitre_Saint-Maclou_Rouen_cour.jpg' },
     },
     {
         id: '2',
         title: 'La Couronne',
         rating: '3.9',
         tag: null,
-        image: require('../assets/restaux-couronne.png'),
+        image: { uri: 'https://res.cloudinary.com/tf-lab/image/upload/w_600,h_337,c_fill,g_auto:subject,q_auto,f_auto/restaurant/640105d6-616a-4c28-b80c-0335bb997232/e0807534-105b-4688-912f-871d87af48f6.jpg' },
     }
 ];
 

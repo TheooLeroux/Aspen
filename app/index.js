@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
   },
   cityText: {
     fontSize: 50,
+    fontWeight: "bold",
     color: "white",
   },
   button: {
