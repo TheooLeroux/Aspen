@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    ScrollView,
-    Image,
-    TouchableOpacity,
-    FlatList,
-    Dimensions
-} from 'react-native';
+import {StyleSheet, Text, View, TextInput, ScrollView, Image, TouchableOpacity, FlatList, Dimensions} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
