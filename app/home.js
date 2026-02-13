@@ -93,13 +93,6 @@ const Home = () => {
                     style={styles.cardRecommendedImage}
                 />
 
-                {/* Tag Vert (ex: Mts76) */}
-                {item.tag && (
-                    <View style={styles.tagBadge}>
-                        <Text style={styles.tagText}>{item.tag}</Text>
-                    </View>
-                )}
-
                 {/* Note overlapping */}
                 <View style={styles.ratingBadgeSmall}>
                     <Text style={styles.ratingTextSmall}>{item.rating}</Text>
